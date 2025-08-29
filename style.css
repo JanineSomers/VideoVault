@@ -20,7 +20,7 @@ body {
   flex-direction: column;
   justify-content: center; /* center everything vertically */
   align-items: center;
-  gap: 15px; /* consistent spacing */
+  gap: 12px; /* tightened spacing */
   padding: 20px;
   animation: fadeIn 1.5s ease-in forwards;
 }
@@ -28,7 +28,7 @@ body {
 /* Logo */
 .logo {
   max-width: 120px;
-  margin-bottom: 10px;
+  margin-bottom: 5px; /* reduced gap */
   opacity: 0;
   animation: fadeUp 1.2s ease forwards;
   animation-delay: 0.2s;
@@ -50,7 +50,7 @@ h1 {
 
 p {
   font-size: 1.2rem;
-  margin: 0 0 20px 0;
+  margin: 0 0 15px 0; /* closer to headline */
   opacity: 0;
   animation: fadeUp 1.2s ease forwards;
   animation-delay: 0.6s;
@@ -59,7 +59,7 @@ p {
 /* Buttons */
 .buttons {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   justify-content: center;
   opacity: 0;
   animation: fadeUp 1.2s ease forwards;
@@ -90,7 +90,7 @@ p {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Upload Page Specific Styles */
+/* Upload & Search Page Form Styles */
 form {
   display: flex;
   flex-direction: column;
@@ -136,6 +136,27 @@ button:hover {
   color: white;
   text-decoration: underline;
   font-size: 0.9rem;
+}
+
+/* Fixed Home Button */
+.home-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background: #ff0099;
+  color: white;
+  text-decoration: none;
+  border-radius: 999px; /* pill shape */
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background 0.3s, transform 0.2s;
+  z-index: 1000; /* keep on top */
+}
+
+.home-btn:hover {
+  background: #cc007a;
+  transform: translateY(-2px);
 }
 
 /* Responsive tweaks */
