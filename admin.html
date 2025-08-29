@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+  <meta charset="UTF-8">
+  <title>Video Vault - Admin</title>
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f9f9f9;
+    }
+    h1 { color: #333; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #4CAF50;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Registered Users</h1>
+  <table id="usersTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    // Replace with your Supabase keys
+    const SUPABASE_URL = "https://rzaakatvzghfgcdjllqf.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6YWFrYXR2emdoZmdjZGpsbHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzQxNDcsImV4cCI6MjA3MTk1MDE0N30.T-V5s1J4b3_-uK2NGAyYupM0M5vxqeZY932Uj_-Z1AU";
+
+    const { createClient } = supabase;
+    const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function loadUsers() {
+      const { data, error } = await db.from("users").select("*");
+
+      if (error) {
+        console.error("Error loading users:", error.message);
+        return;
+      }
+
+      const tbody = document.querySelector("#usersTable tbody");
+      tbody.innerHTML = "";
+
+      data.forEach(user => {
+        const row = `<tr>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.role}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    loadUsers();
+  </script>
+</body>
+</html>

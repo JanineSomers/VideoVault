@@ -1,0 +1,133 @@
+/* style.css */
+
+/* Page Layout */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #8e44ad, #ff6ec7);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  animation: fadeIn 1.5s ease-in forwards;
+}
+
+/* Logo */
+.logo {
+  max-width: 200px;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.2s;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 15px #ff33cc);
+}
+
+/* Text */
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.4s;
+}
+p {
+  font-size: 1.4rem;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.6s;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 20px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 1.2s;
+}
+.buttons a {
+  padding: 12px 25px;
+  background: #ff0099;
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+}
+.buttons a:hover {
+  background: #cc007a;
+  transform: translateY(-3px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Upload Page Specific Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  width: 300px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.6s;
+}
+
+input[type="file"] {
+  background: #fff;
+  color: #333;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button {
+  padding: 12px 20px;
+  background: #ff0099;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+button:hover {
+  background: #cc007a;
+  transform: translateY(-3px);
+}
+
+.back-link {
+  margin-top: 20px;
+  display: inline-block;
+  color: white;
+  text-decoration: underline;
+  font-size: 0.9rem;
+}

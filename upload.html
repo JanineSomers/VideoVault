@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Upload a Video</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="gradient">
+    <main class="container">
+      <h1>Upload a Video</h1>
+
+      <form id="upload-form">
+        <input id="video" type="file" accept="video/*" required />
+
+        <input name="event_name" type="text" placeholder="Event Name" required />
+        <input name="event_date" type="date" required />
+        <input name="venue" type="text" placeholder="Venue" required />
+        <input name="performed_by" type="text" placeholder="Performed By" required />
+
+        <button id="upload-btn" type="submit">Upload</button>
+      </form>
+
+      <p><a href="index.html">← Back to Home</a></p>
+    </main>
+
+    <script type="module">
+      import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+      // ⚠️ Keys go here directly since you're not using build tools
+      const supabaseUrl = "https://rzaakatvzghfgcdjllqf.supabase.co";
+      const supabaseAnon = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6YWFrYXR2emdoZmdjZGpsbHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzQxNDcsImV4cCI6MjA3MTk1MDE0N30.T-V5s1J4b3_-uK2NGAyYupM0M5vxqeZY932Uj_-Z1AU"; // replace with your real anon key
+      const supabase = createClient(supabaseUrl, supabaseAnon);
+
+      const form = document.getElementById("upload-form");
+      const fileInput = document.getElementById("video");
+      const btn = document.getElementById("upload-btn");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const file = fileInput.files[0];
+        if (!file) return alert("Choose a video first.");
+
+        btn.disabled = true;
+        btn.textContent = "Uploading…";
+
+        try {
+          const ext = file.name.split(".").pop();
+          const fileName = `${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2)}.${ext}`;
+
+          // 1) Upload to Supabase Storage
+          const { data: up, error: upErr } = await supabase.storage
+            .from("videos")
+            .upload(fileName, file);
+          if (upErr) throw upErr;
+
+          // 2) Get Public URL
+          const {
+            data: { publicUrl },
+          } = supabase.storage.from("videos").getPublicUrl(fileName);
+
+          // 3) Insert metadata into your "videos" table
+          const payload = {
+            event_name: form.event_name.value,
+            event_date: form.event_date.value,
+            venue: form.venue.value,
+            performed_by: form.performed_by.value,
+            file_url: publicUrl, // ✅ matches your Supabase column
+          };
+
+          const { error: dbErr } = await supabase.from("videos").insert(payload);
+          if (dbErr) throw dbErr;
+
+          alert("Upload successful!");
+          form.reset();
+        } catch (err) {
+          console.error(err);
+          alert("Upload failed: " + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Upload";
+        }
+      });
+    </script>
+  </body>
+</html>
