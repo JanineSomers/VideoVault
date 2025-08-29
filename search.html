@@ -3,84 +3,332 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Search | Video Vault</title>
+
+  <!-- Favicon -->
   <link rel="icon" href="logo.png" type="image/png" />
+
+  <!-- Manifest for PWA -->
   <link rel="manifest" href="manifest.json" />
+
+  <!-- Theme color -->
   <meta name="theme-color" content="#8e44ad" />
-  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #8e44ad, #ff6ec7);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      width: 100%;
+      max-width: 900px;
+      padding: 30px 20px;
+      animation: fadeIn 1.5s ease-in forwards;
+      overflow-y: auto;
+    }
+
+    .logo {
+      max-width: 120px;
+      margin-bottom: 15px;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards;
+      animation-delay: 0.2s;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 15px #ff33cc);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards;
+      animation-delay: 0.4s;
+    }
+
+    form {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      width: 100%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      animation: fadeUp 1.2s ease forwards;
+      animation-delay: 0.6s;
+    }
+
+    input[type="text"], select, input[type="date"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 20px;
+      background: #ff0099;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #cc007a;
+      transform: translateY(-3px);
+    }
+
+    .filters {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+      max-width: 700px;
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .results {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 800px;
+      display: none; /* initially hidden */
+      animation: fadeUp 1.2s ease forwards;
+      animation-delay: 0.8s;
+    }
+
+    .results h2 {
+      margin-top: 0;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 5px;
+      text-align: left;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .video-card {
+      background: rgba(0,0,0,0.4);
+      border-radius: 15px;
+      overflow: hidden;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      background: rgba(0,0,0,0.6);
+    }
+
+    .video-thumb {
+      width: 100%;
+      height: 140px;
+      background: #333;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .video-info {
+      padding: 12px;
+    }
+
+    .video-title {
+      font-size: 1.1rem;
+      margin: 0 0 6px;
+      font-weight: bold;
+    }
+
+    .video-desc {
+      font-size: 0.9rem;
+      color: #ddd;
+      margin: 0;
+    }
+
+    .back-link {
+      margin-top: 25px;
+      display: inline-block;
+      color: white;
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-  <a href="index.html" class="home-btn">Home</a>
   <div class="container">
+    <!-- Logo -->
+    <img src="logo.png" alt="Video Vault Logo" class="logo" />
+
+    <!-- Title -->
     <h1>Search Videos</h1>
 
-    <form id="filterForm">
-      <input type="text" id="eventFilter" placeholder="Event" />
-      <input type="date" id="dateFilter" />
-      <input type="text" id="venueFilter" placeholder="Venue" />
-      <input type="text" id="performerFilter" placeholder="Performer" />
-      <button type="submit">Apply Filters</button>
+    <!-- Search Form -->
+    <form id="searchForm">
+      <input type="text" id="searchInput" placeholder="Enter a keyword..." required />
+      <button type="submit">Search</button>
     </form>
 
+    <!-- Filters -->
+    <div class="filters">
+      <select id="eventFilter">
+        <option value="">Event</option>
+        <option value="concert">Concert</option>
+        <option value="festival">Festival</option>
+        <option value="competition">Competition</option>
+      </select>
+
+      <input type="date" id="dateFilter" />
+
+      <select id="venueFilter">
+        <option value="">Venue</option>
+        <option value="stadium">Stadium</option>
+        <option value="theatre">Theatre</option>
+        <option value="club">Club</option>
+      </select>
+
+      <input type="text" id="performerFilter" placeholder="Performer" />
+    </div>
+
+    <!-- Results -->
     <div id="results" class="results"></div>
+
+    <!-- Back link -->
+    <a href="index.html" class="back-link">← Back to Home</a>
   </div>
 
-  <!-- ✅ Supabase v2 -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Service Worker Registration -->
   <script>
-    const SUPABASE_URL = "https://rzaakatvzghfgcdjllqf.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6YWFrYXR2emdoZmdjZGpsbHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzQxNDcsImV4cCI6MjA3MTk1MDE0N30.T-V5s1J4b3_-uK2NGAyYupM0M5vxqeZY932Uj_-Z1AU";
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then(reg => console.log("Service Worker registered:", reg.scope))
+          .catch(err => console.error("Service Worker registration failed:", err));
+      });
+    }
 
-    // ✅ Correctly wrapped in quotes
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Dummy video data with metadata for filtering
+    const dummyVideos = [
+      {
+        title: "Amazing Cats Compilation",
+        desc: "Funny cats doing funny things.",
+        event: "festival",
+        date: "2023-05-10",
+        venue: "theatre",
+        performer: "DJ Whiskers",
+        thumb: "https://placehold.co/400x225?text=Video+1",
+        url: "#"
+      },
+      {
+        title: "Top 10 Coding Tricks",
+        desc: "Boost your productivity with these tricks.",
+        event: "competition",
+        date: "2023-07-21",
+        venue: "club",
+        performer: "CodeMaster",
+        thumb: "https://placehold.co/400x225?text=Video+2",
+        url: "#"
+      },
+      {
+        title: "Travel Vlog: Paris",
+        desc: "Exploring the streets of Paris.",
+        event: "concert",
+        date: "2023-03-18",
+        venue: "stadium",
+        performer: "ExplorerX",
+        thumb: "https://placehold.co/400x225?text=Video+3",
+        url: "#"
+      }
+    ];
 
+    const searchForm = document.getElementById("searchForm");
     const resultsDiv = document.getElementById("results");
 
-    document.getElementById("filterForm").addEventListener("submit", async (e) => {
+    searchForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const event = document.getElementById("eventFilter").value.trim();
-      const date = document.getElementById("dateFilter").value;
-      const venue = document.getElementById("venueFilter").value.trim();
-      const performer = document.getElementById("performerFilter").value.trim();
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const eventFilter = document.getElementById("eventFilter").value;
+      const dateFilter = document.getElementById("dateFilter").value;
+      const venueFilter = document.getElementById("venueFilter").value;
+      const performerFilter = document.getElementById("performerFilter").value.trim().toLowerCase();
 
-      let query = supabase.from("videos").select("*");
+      let filteredVideos = dummyVideos.filter(video => {
+        return (
+          (query === "" || video.title.toLowerCase().includes(query) || video.desc.toLowerCase().includes(query)) &&
+          (eventFilter === "" || video.event === eventFilter) &&
+          (dateFilter === "" || video.date === dateFilter) &&
+          (venueFilter === "" || video.venue === venueFilter) &&
+          (performerFilter === "" || video.performer.toLowerCase().includes(performerFilter))
+        );
+      });
 
-      if (event) query = query.ilike("event_name", `%${event}%`);
-      if (date) query = query.eq("event_date", date);
-      if (venue) query = query.ilike("venue", `%${venue}%`);
-      if (performer) query = query.ilike("performed_by", `%${performer}%`);
-
-      const { data, error } = await query;
-
-      if (error) {
-        resultsDiv.innerHTML = `<p>Error fetching videos: ${error.message}</p>`;
+      if (filteredVideos.length > 0) {
         resultsDiv.style.display = "block";
-        return;
-      }
-
-      if (!data || data.length === 0) {
-        resultsDiv.innerHTML = `<p>No videos found</p>`;
-        resultsDiv.style.display = "block";
-        return;
-      }
-
-      resultsDiv.style.display = "block";
-      resultsDiv.innerHTML = `
-        <h2>Filtered Results</h2>
-        <div class="video-grid">
-          ${data.map(video => `
-            <div class="video-card">
-              <video controls src="${video.file_url}"></video>
-              <div class="video-info">
-                <p class="video-title">${video.event_name || "Untitled"}</p>
-                <p class="video-meta">Date: ${video.event_date || "-"}</p>
-                <p class="video-meta">Venue: ${video.venue || "-"}</p>
-                <p class="video-meta">Performer: ${video.performed_by || "-"}</p>
+        resultsDiv.innerHTML = `
+          <h2>Results (${filteredVideos.length})</h2>
+          <div class="video-grid">
+            ${filteredVideos.map(video => `
+              <div class="video-card" onclick="window.location='${video.url}'">
+                <div class="video-thumb" style="background-image:url('${video.thumb}')"></div>
+                <div class="video-info">
+                  <p class="video-title">${video.title}</p>
+                  <p class="video-desc">${video.desc}</p>
+                </div>
               </div>
-            </div>
-          `).join("")}
-        </div>
-      `;
+            `).join("")}
+          </div>
+        `;
+      } else {
+        resultsDiv.style.display = "block";
+        resultsDiv.innerHTML = `<h2>No results found</h2>`;
+      }
     });
   </script>
 </body>

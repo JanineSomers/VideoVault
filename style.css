@@ -1,236 +1,156 @@
-/* -------------------------
-   Global Styles
-------------------------- */
+/* style.css */
+
+/* Page Layout */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background: linear-gradient(135deg, #8e44ad, #ff6ec7);
-  color: white;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
   text-align: center;
-  line-height: 1.5;
 }
 
+/* Landing Page Container */
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: center; /* center everything vertically */
   align-items: center;
-  width: 100%;
-  max-width: 900px;
+  gap: 15px; /* consistent spacing */
   padding: 20px;
-  box-sizing: border-box;
+  animation: fadeIn 1.5s ease-in forwards;
 }
 
-/* -------------------------
-   Headings
-------------------------- */
+/* Logo */
+.logo {
+  max-width: 120px;
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.2s;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 15px #ff33cc);
+}
+
+/* Headline & Tagline */
 h1 {
-  font-size: 2.4rem;
-  margin-bottom: 15px;
-}
-
-h2 {
-  font-size: 1.8rem;
-  margin: 20px 0;
+  font-size: 2.2rem;
+  margin: 0;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.4s;
 }
 
 p {
-  font-size: 1.1rem;
-  margin-bottom: 20px;
+  font-size: 1.2rem;
+  margin: 0 0 20px 0;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.6s;
 }
 
-/* -------------------------
-   Landing Page Buttons
-------------------------- */
+/* Buttons */
 .buttons {
   display: flex;
   gap: 15px;
-  margin-top: 20px;
-  flex-wrap: wrap;
   justify-content: center;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.8s;
 }
 
-.btn {
-  background: linear-gradient(135deg, #ff0099, #ff66cc);
-  color: white;
+.buttons a {
   padding: 12px 25px;
-  border-radius: 25px;
+  background: #ff0099;
+  color: white;
   text-decoration: none;
+  border-radius: 999px; /* pill shape */
   font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: inline-block;
+  transition: background 0.3s, transform 0.2s;
+}
+.buttons a:hover {
+  background: #cc007a;
+  transform: translateY(-3px);
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* -------------------------
-   Forms (Upload & Search)
-------------------------- */
+/* Upload Page Specific Styles */
 form {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  width: 100%;
-  max-width: 650px;
-  background: rgba(255, 255, 255, 0.12);
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.1);
   padding: 20px;
-  border-radius: 18px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  width: 300px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 0.6s;
 }
 
-input[type="text"],
-input[type="date"],
-input[type="file"],
-select {
-  flex: 1 1 45%;
-  padding: 12px 15px;
-  border-radius: 12px;
-  border: none;
-  font-size: 1rem;
-  outline: none;
+input[type="file"] {
+  background: #fff;
   color: #333;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
 }
 
 button {
-  flex: 1 1 100%;
-  padding: 14px 22px;
+  padding: 12px 20px;
   background: #ff0099;
   color: white;
   border: none;
-  border-radius: 30px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-button:hover {
-  background: #ff33aa;
-  transform: translateY(-2px);
-}
-
-/* -------------------------
-   Results & Videos
-------------------------- */
-.results {
-  margin-top: 35px;
-  width: 100%;
-  max-width: 850px;
-  display: none;
-  text-align: left;
-}
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.video-card {
-  background: rgba(0, 0, 0, 0.45);
-  border-radius: 15px;
-  overflow: hidden;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.video-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-video {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.video-info {
-  padding: 10px 0 4px;
-}
-
-.video-title {
-  font-size: 1.15rem;
-  font-weight: bold;
-  margin: 0;
-}
-
-.video-meta {
-  font-size: 0.9rem;
-  color: #ddd;
-  margin: 2px 0;
-}
-
-/* -------------------------
-   Navigation (Home Button)
-------------------------- */
-.home-btn {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 10px 18px;
   border-radius: 25px;
-  text-decoration: none;
   font-weight: bold;
-  font-size: 0.95rem;
-  transition: background 0.25s ease, transform 0.25s ease;
-  z-index: 1000;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+button:hover {
+  background: #cc007a;
+  transform: translateY(-3px);
 }
 
-.home-btn:hover {
-  background: rgba(0, 0, 0, 0.7);
-  transform: scale(1.05);
+.back-link {
+  margin-top: 20px;
+  display: inline-block;
+  color: white;
+  text-decoration: underline;
+  font-size: 0.9rem;
 }
 
-/* -------------------------
-   Responsive Adjustments
-------------------------- */
+/* Responsive tweaks */
 @media (max-width: 600px) {
+  .logo {
+    max-width: 90px;
+  }
   h1 {
     font-size: 1.8rem;
   }
-
   p {
     font-size: 1rem;
   }
-
-  form {
-    padding: 15px;
-    gap: 10px;
-  }
-
-  input[type="text"],
-  input[type="date"],
-  input[type="file"],
-  select {
-    flex: 1 1 100%;
-  }
-
-  button {
-    font-size: 0.95rem;
-  }
-
-  .buttons {
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .btn {
-    width: 100%;
-    text-align: center;
-    padding: 14px 0;
+  .buttons a {
+    padding: 10px 18px;
+    font-size: 0.9rem;
   }
 }
