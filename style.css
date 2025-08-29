@@ -1,196 +1,187 @@
-/* style.css */
-
-/* Page Layout */
+/* -------------------------
+   Global Styles
+------------------------- */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background: linear-gradient(135deg, #8e44ad, #ff6ec7);
-  height: 100vh;
+  color: white;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  color: white;
+  align-items: flex-start;
   text-align: center;
+  line-height: 1.5;
 }
 
-/* Landing Page Container */
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* center everything vertically */
   align-items: center;
-  gap: 12px; /* tightened spacing */
-  padding: 20px;
-  animation: fadeIn 1.5s ease-in forwards;
+  width: 100%;
+  max-width: 900px;
+  padding: 80px 20px 40px; /* extra top padding for home button */
+  box-sizing: border-box;
 }
 
-/* Logo */
-.logo {
-  max-width: 120px;
-  margin-bottom: 5px; /* reduced gap */
-  opacity: 0;
-  animation: fadeUp 1.2s ease forwards;
-  animation-delay: 0.2s;
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-.logo:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(0 0 15px #ff33cc);
-}
-
-/* Headline & Tagline */
+/* -------------------------
+   Headings
+------------------------- */
 h1 {
-  font-size: 2.2rem;
-  margin: 0;
-  opacity: 0;
-  animation: fadeUp 1.2s ease forwards;
-  animation-delay: 0.4s;
+  font-size: 2.4rem;
+  margin-bottom: 25px;
 }
 
-p {
-  font-size: 1.2rem;
-  margin: 0 0 15px 0; /* closer to headline */
-  opacity: 0;
-  animation: fadeUp 1.2s ease forwards;
-  animation-delay: 0.6s;
+h2 {
+  font-size: 1.8rem;
+  margin: 20px 0;
 }
 
-/* Buttons (Landing Page) */
-.buttons {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  opacity: 0;
-  animation: fadeUp 1.2s ease forwards;
-  animation-delay: 0.8s;
-}
-
-.buttons a {
-  padding: 12px 25px;
-  background: #ff0099;
-  color: white;
-  text-decoration: none;
-  border-radius: 999px; /* pill shape */
-  font-weight: bold;
-  transition: background 0.3s, transform 0.2s;
-}
-.buttons a:hover {
-  background: #cc007a;
-  transform: translateY(-3px);
-}
-
-/* Upload & Search Page Form Styles */
+/* -------------------------
+   Forms
+------------------------- */
 form {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 20px;
-  background: rgba(255, 255, 255, 0.15); /* glassmorphism */
-  backdrop-filter: blur(10px);
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  width: 320px;
-  max-width: 90%;
-  opacity: 0;
-  animation: fadeUp 1.2s ease forwards;
-  animation-delay: 0.6s;
-}
-
-h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  max-width: 650px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 20px;
+  border-radius: 18px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 input[type="text"],
-input[type="file"] {
-  background: rgba(255,255,255,0.9);
-  color: #333;
+input[type="date"],
+input[type="file"],
+select {
+  flex: 1 1 45%;
   padding: 12px 15px;
   border-radius: 12px;
   border: none;
-  outline: none;
   font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="file"]:focus {
-  box-shadow: 0 0 8px #ff33cc;
-  transform: scale(1.02);
+  outline: none;
+  color: #333;
 }
 
 button {
+  flex: 1 1 100%;
   padding: 14px 22px;
-  background: linear-gradient(135deg, #ff0099, #ff66cc);
+  background: #ff0099;
   color: white;
   border: none;
-  border-radius: 999px; /* pill shape */
+  border-radius: 30px;
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  transition: all 0.25s ease;
 }
+
 button:hover {
-  background: linear-gradient(135deg, #cc007a, #ff3399);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  background: #ff33aa;
+  transform: translateY(-2px);
 }
 
-/* Back Link */
-.back-link {
-  margin-top: 20px;
-  display: inline-block;
-  color: white;
-  text-decoration: underline;
+/* -------------------------
+   Results & Videos
+------------------------- */
+.results {
+  margin-top: 35px;
+  width: 100%;
+  max-width: 850px;
+  display: none;
+  text-align: left;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.video-card {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+video {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.video-info {
+  padding: 10px 0 4px;
+}
+
+.video-title {
+  font-size: 1.15rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.video-meta {
   font-size: 0.9rem;
+  color: #ddd;
+  margin: 2px 0;
 }
 
-/* Fixed Home Button */
+/* -------------------------
+   Navigation
+------------------------- */
 .home-btn {
   position: fixed;
   top: 20px;
   left: 20px;
-  padding: 10px 20px;
-  background: #ff0099;
+  background: rgba(0, 0, 0, 0.5);
   color: white;
+  padding: 10px 18px;
+  border-radius: 25px;
   text-decoration: none;
-  border-radius: 999px; /* pill shape */
   font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: background 0.3s, transform 0.2s;
-  z-index: 1000; /* keep on top */
+  font-size: 0.95rem;
+  transition: background 0.25s ease, transform 0.25s ease;
+  z-index: 1000;
 }
+
 .home-btn:hover {
-  background: #cc007a;
-  transform: translateY(-2px);
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.05);
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive tweaks */
+/* -------------------------
+   Responsive Adjustments
+------------------------- */
 @media (max-width: 600px) {
-  .logo {
-    max-width: 90px;
-  }
   h1 {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
   }
-  p {
-    font-size: 1rem;
+
+  form {
+    padding: 15px;
+    gap: 10px;
   }
-  .buttons a {
-    padding: 10px 18px;
-    font-size: 0.9rem;
+
+  input[type="text"],
+  input[type="date"],
+  input[type="file"],
+  select {
+    flex: 1 1 100%;
+  }
+
+  button {
+    font-size: 0.95rem;
   }
 }

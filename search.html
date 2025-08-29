@@ -3,104 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Search | Video Vault</title>
   <link rel="icon" href="logo.png" type="image/png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#8e44ad" />
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #8e44ad, #ff6ec7);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      text-align: center;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-      width: 100%;
-      max-width: 900px;
-      padding: 30px 20px;
-      overflow-y: auto;
-    }
-    h1 { font-size: 2.2rem; margin-bottom: 25px; }
-    form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      width: 100%;
-      max-width: 600px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 15px;
-    }
-    input[type="text"], input[type="date"] {
-      flex: 1 1 45%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-size: 1rem;
-      outline: none;
-    }
-    button {
-      flex: 1 1 100%;
-      padding: 12px 20px;
-      background: #ff0099;
-      color: white;
-      border: none;
-      border-radius: 25px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .results {
-      margin-top: 30px;
-      width: 100%;
-      max-width: 800px;
-      display: none;
-    }
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-    }
-    .video-card {
-      background: rgba(0,0,0,0.4);
-      border-radius: 15px;
-      overflow: hidden;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-    }
-    video {
-      width: 100%;
-      border-radius: 10px;
-    }
-    .video-info { padding: 8px 0; }
-    .video-title { font-size: 1.1rem; font-weight: bold; margin: 0; }
-    .video-meta { font-size: 0.9rem; color: #ddd; margin: 2px 0; }
-    .back-link {
-      margin-top: 25px;
-      display: inline-block;
-      color: white;
-      text-decoration: underline;
-      font-size: 0.9rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <a href="index.html" class="home-btn">Home</a>
   <div class="container">
     <h1>Search Videos</h1>
 
-    <!-- Filters -->
     <form id="filterForm">
       <input type="text" id="eventFilter" placeholder="Event" />
       <input type="date" id="dateFilter" />
@@ -109,16 +22,14 @@
       <button type="submit">Apply Filters</button>
     </form>
 
-    <!-- Results -->
     <div id="results" class="results"></div>
-
+  </div>
 
   <!-- ✅ Supabase v2 -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
-    // ✅ Replace with your Supabase details
     const SUPABASE_URL = "https://rzaakatvzghfgcdjllqf.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6YWFrYXR2emdoZmdjZGpsbHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzQxNDcsImV4cCI6MjA3MTk1MDE0N30.T-V5s1J4b3_-uK2NGAyYupM0M5vxqeZY932Uj_-Z1AU";
+    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY-HERE";
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const resultsDiv = document.getElementById("results");
@@ -126,11 +37,10 @@
     document.getElementById("filterForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const event = document.getElementById("eventFilter").value.trim();
-      const date = document.getElementById("dateFilter").value; // no trim for date
+      const date = document.getElementById("dateFilter").value;
       const venue = document.getElementById("venueFilter").value.trim();
       const performer = document.getElementById("performerFilter").value.trim();
 
-      // ✅ Build query
       let query = supabase.from("videos").select("*");
 
       if (event) query = query.ilike("event_name", `%${event}%`);
@@ -141,7 +51,6 @@
       const { data, error } = await query;
 
       if (error) {
-        console.error("Error fetching videos:", error);
         resultsDiv.innerHTML = `<p>Error fetching videos</p>`;
         resultsDiv.style.display = "block";
         return;
@@ -153,7 +62,6 @@
         return;
       }
 
-      // ✅ Render videos
       resultsDiv.style.display = "block";
       resultsDiv.innerHTML = `
         <h2>Filtered Results</h2>
@@ -174,6 +82,4 @@
     });
   </script>
 </body>
-<a href="index.html" class="home-btn">Home</a>
-
 </html>

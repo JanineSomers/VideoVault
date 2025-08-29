@@ -1,130 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Upload a Video</title>
-    <link rel="stylesheet" href="style.css" />
-    <style>
-      form input {
-        margin-bottom: 15px;
-      }
-      ::placeholder {
-        color: #666;
-      }
-      .required-placeholder::placeholder {
-        color: red;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body class="gradient">
-    <main class="container">
-      <h1>Upload a Video</h1>
-
-      <form id="upload-form">
-        <!-- Video File -->
-        <input
-          id="video"
-          name="video"
-          type="file"
-          accept="video/*"
-          required
-        />
-
-        <!-- Metadata -->
-        <input
-          name="event_name"
-          type="text"
-          placeholder="Event Name"
-        />
-
-        <input
-          name="event_date"
-          type="date"
-          required
-          placeholder="Event Date *"
-        />
-
-        <input
-          name="venue"
-          type="text"
-          placeholder="Venue *"
-          required
-        />
-
-        <input
-          name="performed_by"
-          type="text"
-          placeholder="Performer"
-        />
-
-        <!-- Submit -->
-        <button id="upload-btn" type="submit">Upload</button>
-      </form>
-
-
-    <script type="module">
-      import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-      const supabaseUrl = "https://rzaakatvzghfgcdjllqf.supabase.co";
-      const supabaseAnon =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6YWFrYXR2emdoZmdjZGpsbHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzQxNDcsImV4cCI6MjA3MTk1MDE0N30.T-V5s1J4b3_-uK2NGAyYupM0M5vxqeZY932Uj_-Z1AU";
-      const supabase = createClient(supabaseUrl, supabaseAnon);
-
-      const form = document.getElementById("upload-form");
-      const fileInput = document.getElementById("video");
-      const btn = document.getElementById("upload-btn");
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const file = fileInput.files[0];
-        if (!file) return alert("Choose a video first.");
-
-        btn.disabled = true;
-        btn.textContent = "Uploading…";
-
-        try {
-          const ext = file.name.split(".").pop();
-          const fileName = `${Date.now()}-${Math.random()
-            .toString(36)
-            .slice(2)}.${ext}`;
-
-          // 1) Upload to Supabase Storage
-          const { error: upErr } = await supabase.storage
-            .from("videos")
-            .upload(fileName, file);
-          if (upErr) throw upErr;
-
-          // 2) Get Public URL
-          const {
-            data: { publicUrl },
-          } = supabase.storage.from("videos").getPublicUrl(fileName);
-
-          // 3) Insert metadata into your "videos" table
-          const payload = {
-            event_name: form.event_name.value.trim() || null,
-            event_date: form.event_date.value,
-            venue: form.venue.value.trim(),
-            performed_by: form.performed_by.value.trim() || null,
-            file_url: publicUrl,
-          };
-
-          const { error: dbErr } = await supabase.from("videos").insert(payload);
-          if (dbErr) throw dbErr;
-
-          alert("✅ Upload successful!");
-          form.reset();
-        } catch (err) {
-          console.error(err);
-          alert("❌ Upload failed: " + err.message);
-        } finally {
-          btn.disabled = false;
-          btn.textContent = "Upload";
-        }
-      });
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload | Video Vault</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#8e44ad" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
   <a href="index.html" class="home-btn">Home</a>
+  <div class="container">
+    <h1>Upload Video</h1>
 
+    <form id="uploadForm">
+      <input type="text" id="event" placeholder="Event" />
+      <input type="date" id="date" required />
+      <input type="text" id="venue" placeholder="Venue" required />
+      <input type="text" id="performer" placeholder="Performer" />
+      <input type="file" id="videoFile" accept="video/*" required />
+      <button type="submit">Upload</button>
+    </form>
+
+    <div id="uploadStatus"></div>
+  </div>
+
+  <!-- ✅ Supabase v2 -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://rzaakatvzghfgcdjllqf.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY-HERE"; // 🔑 keep yours here
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const uploadForm = document.getElementById("uploadForm");
+    const uploadStatus = document.getElementById("uploadStatus");
+
+    uploadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const event = document.getElementById("event").value.trim();
+      const date = document.getElementById("date").value;
+      const venue = document.getElementById("venue").value.trim();
+      const performer = document.getElementById("performer").value.trim();
+      const file = document.getElementById("videoFile").files[0];
+
+      if (!file) {
+        uploadStatus.innerHTML = "<p>Please select a video file.</p>";
+        return;
+      }
+
+      const fileName = `${Date.now()}-${file.name}`;
+      const { data, error } = await supabase.storage.from("videos").upload(fileName, file);
+
+      if (error) {
+        uploadStatus.innerHTML = `<p>Error: ${error.message}</p>`;
+        return;
+      }
+
+      const { data: publicUrl } = supabase.storage.from("videos").getPublicUrl(fileName);
+
+      await supabase.from("videos").insert([{
+        event_name: event,
+        event_date: date,
+        venue: venue,
+        performed_by: performer,
+        file_url: publicUrl.publicUrl
+      }]);
+
+      uploadStatus.innerHTML = "<p>✅ Upload successful!</p>";
+      uploadForm.reset();
+    });
+  </script>
+</body>
 </html>
