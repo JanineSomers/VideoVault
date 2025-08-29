@@ -10,7 +10,7 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   text-align: center;
   line-height: 1.5;
 }
@@ -21,7 +21,7 @@ body {
   align-items: center;
   width: 100%;
   max-width: 900px;
-  padding: 80px 20px 40px; /* extra top padding for home button */
+  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -30,7 +30,7 @@ body {
 ------------------------- */
 h1 {
   font-size: 2.4rem;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 h2 {
@@ -38,8 +38,41 @@ h2 {
   margin: 20px 0;
 }
 
+p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
 /* -------------------------
-   Forms
+   Landing Page Buttons
+------------------------- */
+.buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  background: linear-gradient(135deg, #ff0099, #ff66cc);
+  color: white;
+  padding: 12px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* -------------------------
+   Forms (Upload & Search)
 ------------------------- */
 form {
   display: flex;
@@ -139,7 +172,7 @@ video {
 }
 
 /* -------------------------
-   Navigation
+   Navigation (Home Button)
 ------------------------- */
 .home-btn {
   position: fixed;
@@ -166,7 +199,11 @@ video {
 ------------------------- */
 @media (max-width: 600px) {
   h1 {
-    font-size: 1.9rem;
+    font-size: 1.8rem;
+  }
+
+  p {
+    font-size: 1rem;
   }
 
   form {
@@ -184,46 +221,16 @@ video {
   button {
     font-size: 0.95rem;
   }
-}
-/* Responsive tweaks for mobile */
-@media (max-width: 600px) {
-  body {
-    padding: 10px;
-    height: auto;
-    min-height: 100vh;
-    align-items: flex-start; /* stop squashing at the very center */
-  }
-
-  .container {
-    gap: 10px;
-    padding: 15px;
-  }
-
-  .logo {
-    max-width: 80px;
-    margin-bottom: 8px;
-  }
-
-  h1 {
-    font-size: 1.6rem;
-    line-height: 1.3;
-  }
-
-  p {
-    font-size: 0.95rem;
-    margin-bottom: 12px;
-  }
 
   .buttons {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
   }
 
-  .buttons a {
+  .btn {
     width: 100%;
     text-align: center;
-    padding: 10px 0;
-    font-size: 1rem;
+    padding: 14px 0;
   }
 }

@@ -29,7 +29,9 @@
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://rzaakatvzghfgcdjllqf.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY-HERE";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6YWFrYXR2emdoZmdjZGpsbHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYzNzQxNDcsImV4cCI6MjA3MTk1MDE0N30.T-V5s1J4b3_-uK2NGAyYupM0M5vxqeZY932Uj_-Z1AU";
+
+    // ✅ Correctly wrapped in quotes
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const resultsDiv = document.getElementById("results");
@@ -51,7 +53,7 @@
       const { data, error } = await query;
 
       if (error) {
-        resultsDiv.innerHTML = `<p>Error fetching videos</p>`;
+        resultsDiv.innerHTML = `<p>Error fetching videos: ${error.message}</p>`;
         resultsDiv.style.display = "block";
         return;
       }
